@@ -19,7 +19,8 @@ word_list_data_study$group_speaker = factor(word_list_data_study$group_speaker)
 # building brms models 
 model1_1 <- brm(count_target | trunc(lb=1) ~ count_prime_own + count_prime_partner +
                 (1 | group)+ (1|group_speaker)+ (1|word) + (1|group_turn_id) + (1|term),
-              data = word_list_data_study, family = poisson())
+              data = word_list_data_study, family = poisson(),
+                chains = 4, cores = 4, backend = 'cmdstanr', threads = threading(8))
 summary(model1_1)
 # 1.2 word aggregated across sentences for each speaker
 
@@ -33,8 +34,9 @@ all_word_sum = word_list_data_study %>%
             count_prime_partner = sum(count_prime_partner))
 # model
 model1_2 <- brm(count_target | trunc(lb=1) ~ count_prime_own + count_prime_partner +
-                  (1 | group)+ (1|group_speaker)+ (1|word) + (1|term),
-                data = all_word_sum, family = poisson())
+                  (1 | term_group)+ (1|group_speaker)+ (1|word) + (1|term),
+                data = all_word_sum, family = poisson(),
+chains = 4, cores = 4, backend = 'cmdstanr', threads = threading(8))
 summary(model1_2)
 
 
@@ -56,7 +58,8 @@ word_list_data_study$group_speaker = factor(word_list_data_study$group_speaker)
 # building brms models 
 model2_1 <- brm(count_target | trunc(lb=1) ~ count_prime_own + count_prime_partner +
                   (1 | group)+ (1|group_speaker)+ (1|word) + (1|group_turn_id) + (1|term),
-                data = word_list_data_study, family = poisson())
+                data = word_list_data_study, family = poisson(),
+chains = 4, cores = 4, backend = 'cmdstanr', threads = threading(8))
 summary(model2_1)
 # 2.2 word aggregated across sentences for each speaker
 
@@ -70,8 +73,9 @@ all_word_sum = word_list_data_study %>%
             count_prime_partner = sum(count_prime_partner))
 # model
 model2_2 <- brm(count_target | trunc(lb=1) ~ count_prime_own + count_prime_partner +
-                  (1 | group)+ (1|group_speaker)+ (1|word) + (1|term),
-                data = all_word_sum, family = poisson())
+                  (1 | term_group)+ (1|group_speaker)+ (1|word) + (1|term),
+                data = all_word_sum, family = poisson(),
+chains = 4, cores = 4, backend = 'cmdstanr', threads = threading(8))
 summary(model2_2)
 
 # 3. syntactic structure models
@@ -92,7 +96,8 @@ syntax_rule_data_study$group_speaker = factor(syntax_rule_data_study$group_speak
 # building brms models 
 model3_1 = brm(count_target | trunc(lb=1) ~ count_prime_own + count_prime_partner +
                          (1 | group)+ (1|group_speaker)+ (1|key) + (1|group_turn_id) + (1|term),
-                       data = syntax_rule_data_study, family = poisson())
+                       data = syntax_rule_data_study, family = poisson(),
+chains = 4, cores = 4, backend = 'cmdstanr', threads = threading(8))
   
 summary(model3_1)
 # 3.2 sytax rules aggregated across sentences for each speaker
@@ -107,7 +112,8 @@ syntax_rule_sum = syntax_rule_data_study %>%
             count_prime_partner = sum(count_prime_partner))
 # model
 model3_2 <- brm(count_target | trunc(lb=1) ~ count_prime_own + count_prime_partner +
-                  (1 | group)+ (1|group_speaker)+ (1|key) + (1|term),
-                data = syntax_rule_sum, family = poisson())
+                  (1 | term_group)+ (1|group_speaker)+ (1|key) + (1|term),
+                data = syntax_rule_sum, family = poisson(),
+chains = 4, cores = 4, backend = 'cmdstanr', threads = threading(8))
 summary(model3_2)
 
